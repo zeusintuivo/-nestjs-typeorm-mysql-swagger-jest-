@@ -161,12 +161,13 @@ describe('(e2e)', () => {
           // console.log(res.body);
           expect(res.body).toBeDefined();
           const body: any = JSON.parse(res.text);
+          // console.log(body);
           expect(body).toBeDefined();
           expect(body.post).toBeDefined();
           // expect(body.post._id).toBeDefined();
           // postId = body.post._id;
           expect(body.post.title).toEqual(postNewData.title);
-          expect(body.post.slug).toEqual(postNewData.slug);
+          expect(body.post.slug).toBeUndefined();
           expect(body.post.excerpt).toEqual(postNewData.excerpt);
           expect(body.post.content).toEqual(postNewData.content);
           expect(body.post.category).toEqual(postNewData.category);
