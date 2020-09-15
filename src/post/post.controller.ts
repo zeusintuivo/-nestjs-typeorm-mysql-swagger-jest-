@@ -1,6 +1,5 @@
 import { Controller, Get, Post, Put, Delete, Res, HttpStatus, Body, Param, NotFoundException, Query, BadGatewayException  } from '@nestjs/common';
-import { CreatePostDto } from './dtos';
-import { Logger, ValidationPipe } from '@nestjs/common';
+import { CreatePostDto, EditPostDto } from './dtos';
 
 
 @Controller('post')
@@ -33,14 +32,25 @@ export class PostController {
    @Post('/create')
    async createPost(@Res() res, @Body() createPostDto: CreatePostDto)  {
     //  console.log(createPostDto);
-     const post = await createPostDto 
-    //  const product = await this.postService.createPost(createPostDto);
+     const post = await createPostDto   // Dummy 
+    //  const post = await this.postService.createPost(createPostDto);
      return res.status(HttpStatus.CREATED).json({
        post: post
      })
    }
 
-    @Get(':id')
+   @Put('/:postID')
+   async postPut(@Res() res, @Param('postID') postID, @Body() editPostDto: EditPostDto)  {
+    const post = await editPostDto  // Dummy 
+    // const post = await this.postService.updatepost(postID, editPostDto);
+     if (!post) throw new NotFoundException(postID);
+     return res.status(HttpStatus.FOUND).json({
+       post
+     })
+   }
+ 
+
+   @Get(':id')
     getOne(@Res() res,@Param('id') id: string){
         return res.status(HttpStatus.OK)
     }

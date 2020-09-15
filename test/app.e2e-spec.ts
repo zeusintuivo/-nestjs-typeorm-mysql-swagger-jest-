@@ -17,8 +17,19 @@ const post: CreatePostDto = {
   slug: 'happy-reading',
   excerpt: 'Story about a happy life with good sex, food and health',
   content: 'There once was a little boy, that grew sad. He sat down and got happy procastinating. He later filmed The Office',
-  category:  'TECHNOLOGY',
+  category:  'LIFESTYLE',
   tags: ['happy', 'reading', 'office'],
+  status: true,
+  more: 'should not pass this'
+};
+
+const postNewData: CreatePostDto = {
+  title: 'Sleeping awareness',
+  slug: 'sleeping-awareness',
+  excerpt: 'Story about the growing of Alvarito Buyernburg At he grows unaware of the racial divide.',
+  content: 'There was a boy. A Strangered Shadowed Strong and alive boy, and while he jumped through many things, this he said to himself.',
+  category:  'LIFESTYLE',
+  tags: ['sleeping', 'awareness', 'shadowed'],
   status: true,
   more: 'should not pass this'
 };
@@ -135,8 +146,36 @@ describe('(e2e)', () => {
           ]);
         })
     });
-    // it('/ (POST)', () => { return request(app.getHttpServer()).post('/post').expect(HttpStatus.OK)}); // it
-    // it('/ (PUT)', () => { return request(app.getHttpServer()).put('/post').expect(HttpStatus.OK)}); // it
+    it('/.../:postID (PUT)', () => {
+      // console.log(postId);
+      return request(app.getHttpServer())
+        .put('/post/' + postId )
+        .send(postNewData).expect(HttpStatus.FOUND)
+        .expect((res) => {
+          expect(res.headers).toBeDefined();
+          // console.log(res.text);
+          expect(res.text).toBeDefined();
+          // console.log(res.error);
+          expect(res.error).toBeDefined();
+          expect(res.error).toEqual(false);
+          // console.log(res.body);
+          expect(res.body).toBeDefined();
+          const body: any = JSON.parse(res.text);
+          expect(body).toBeDefined();
+          expect(body.post).toBeDefined();
+          // expect(body.post._id).toBeDefined();
+          // postId = body.post._id;
+          expect(body.post.title).toEqual(postNewData.title);
+          expect(body.post.slug).toEqual(postNewData.slug);
+          expect(body.post.excerpt).toEqual(postNewData.excerpt);
+          expect(body.post.content).toEqual(postNewData.content);
+          expect(body.post.category).toEqual(postNewData.category);
+          expect(body.post.tags).toEqual(postNewData.tags);
+          expect(body.post.status).toEqual(postNewData.status);
+          expect(body.post.more).toBeUndefined();
+        })
+    }); // it
+
     // it('/ (DELETE)', () => { return request(app.getHttpServer()).delete('/post').expect(HttpStatus.OK)}); // it
   }); // describe 
 
